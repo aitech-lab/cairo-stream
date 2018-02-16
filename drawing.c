@@ -129,7 +129,8 @@ static void broadcast(struct mg_connection *nc, const struct mg_str msg) {
   mg_sock_addr_to_str(&nc->sa, addr, sizeof(addr),
                       MG_SOCK_STRINGIFY_IP | MG_SOCK_STRINGIFY_PORT);
 
-  snprintf(buf, sizeof(buf), "%s %.*s", addr, (int) msg.len, msg.p);
+  // snprintf(buf, sizeof(buf), "%s %.*s", addr, (int) msg.len, msg.p);
+  snprintf(buf, sizeof(buf),"%.*s", (int) msg.len, msg.p);
   fprintf(stderr, "%s\n", buf); /* Local echo. */
   for (c = mg_next(nc->mgr, NULL); c != NULL; c = mg_next(nc->mgr, c)) {
     // if (c == nc) continue; /* Don't send to the sender. */
