@@ -51,8 +51,13 @@ void draw() {
     
     cairo_set_font_size(cr, 24.0);
     cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
+
+    char text[512];
+    cairo_move_to(cr, x, 50);
+    sprintf(text, "%d %.2ffps %.1fms", n++, fps, rt*1000);
+    cairo_show_text(cr, text);
+
     cairo_move_to(cr, x, y);
-    //sprintf(buf, "%d %.2ffps %.1fms", n++, fps, rt*1000);
     cairo_show_text(cr, buf);
 
     for(int i=0; i<5; i++) {   
