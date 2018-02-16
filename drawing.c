@@ -53,7 +53,7 @@ void draw() {
     cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
 
     char text[512];
-    cairo_move_to(cr, x, 50);
+    cairo_move_to(cr, 10, 30);
     sprintf(text, "%d %.2ffps %.1fms", n++, fps, rt*1000);
     cairo_show_text(cr, text);
 
