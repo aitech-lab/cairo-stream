@@ -8,8 +8,8 @@ void draw(unsigned char* data, int w, int h, int n, double fps) {
         cairo_image_surface_create_for_data(data, CAIRO_FORMAT_RGB24, w, h, stride);
     cairo_t* cr = cairo_create(surface);
     
-    cairo_set_source_rgba (cr, 0.1, 0.1, 0.1, 0.4);
-    cairo_paint(cr);
+    // cairo_set_source_rgba (cr, 0.1, 0.1, 0.1, 0.4);
+    // cairo_paint(cr);
     
     cairo_select_font_face(
         cr, "serif",

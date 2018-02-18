@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 FILE* 
 ffmpeg_in_pipe(
@@ -12,13 +13,14 @@ ffmpeg_in_pipe(
         " -hide_banner"         // disable deubg
         " -ss %4$d"             // seek
         " -t %5$d"              // length
-        " -i %1$s"              // input file
+        " -i videos/lia_00%1$d.mp4"              // input file
         " -vf crop=%2$d:%3$d"   // crop filter
         " -pix_fmt rgb32"       // output format
         " -f rawvideo"          // container format
         " -"                    // pipe output
         " 2>>in.log";           // stderr to file
-    snprintf(cmd, 1024, tpl, file, w, h, seek, length);
+    //snprintf(cmd, 1024, tpl, file, w, h, seek, length);
+    snprintf(cmd, 1024, tpl, rand()%2+1, w, h, seek, length);
     FILE* fp =  popen(cmd, "r");
     if(fp == NULL) 
         fprintf(stderr, "ERR:", cmd);
@@ -46,7 +48,7 @@ ffmpeg_out_pipe(
         " -i anullsrc"           //
 
         " -c:v libx264"          // video codec     
-        " -b:v 750k"             // bitrate
+        " -b:v 150k"             // bitrate
         " -crf 23"               // constant rate factor 0-51 
         " -preset fast"          // preset
         " -pix_fmt yuv420p"      //
