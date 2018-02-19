@@ -23,7 +23,6 @@ void draw() {
 
     char text[512];
     cairo_move_to(cr, 10, 30);
-    printf("rf: %d -> wf: %d\n", read_frame, write_frame);
     sprintf(text, "buf: %d  fps: %.1f", read_count-write_count, fps);
     cairo_show_text(cr, text);
 
