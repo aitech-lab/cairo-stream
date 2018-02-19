@@ -29,11 +29,27 @@ unsigned int
 double target_fps = 30.08;
 int done = 0;
 
+int head_distance() {
+    return read_frame > write_frame ?
+           read_frame - write_frame : 
+           read_frame - write_frame + buffer_length;
+}
+
 void* 
 read_thread(void* arg) {
     while (!done) {
         FILE* in_pipe  = ffmpeg_in_pipe(w, h, rand()%10*10, 10, file); 
-        while(!done && fread(&buffer[write_frame*frame_size], 1, frame_size, in_pipe)) {
+        while(!done) {
+
+            if(head_distance() <= 1) {
+                struct timespec delay = { 0, 30*1000000L };
+                nanosleep(&delay, NULL);
+                continue;
+            }
+            
+            size_t size = fread(&buffer[write_frame*frame_size], 1, frame_size, in_pipe); 
+            if(!size) break;
+           
             write_frame = (write_frame+1) % buffer_length;
         }
         int status = pclose(in_pipe);
