@@ -55,7 +55,7 @@ write_thread(void* arg) {
 
     while(!done) {
 
-        if (read_count - write_count < buffer_length/2 ) {
+        if (read_count - write_count < 30 ) {
             msleep(30); 
             continue;
         }
@@ -83,8 +83,8 @@ write_thread(void* arg) {
         tt = ((double)end.tv_sec   + 1.0e-9*end.tv_nsec  ) - 
              ((double)start.tv_sec + 1.0e-9*start.tv_nsec);
         fps = 1.0/tt;
-        write_count+=5;
-        write_frame = (write_frame+5) % buffer_length;
+        write_count+=4;
+        write_frame = (write_frame+4) % buffer_length;
     }
     pclose(out_pipe);
 }
