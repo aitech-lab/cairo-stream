@@ -13,7 +13,7 @@ ffmpeg_in_pipe(
         " -hide_banner"         // disable deubg
         " -ss %4$d"             // seek
         " -t %5$d"              // length
-        " -i videos/lia_00%1$d.mp4"              // input file
+        " -i videos/lia_0%1$d.mp4"              // input file
         " -vf crop=%2$d:%3$d"   // crop filter
         " -pix_fmt rgb32"       // output format
         " -f rawvideo"          // container format
