@@ -99,6 +99,7 @@ void on_message(unsigned char* msg, size_t len) {
     // set speed here
     char* str = strndup(msg, len);
     int step = atoi(str);
+    printf("STEP: %d\n", step);
     if(step >0 && step <10) write_step = step;
     free(str);
 }
