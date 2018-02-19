@@ -20,7 +20,7 @@ ffmpeg_in_pipe(
         " -"                    // pipe output
         " 2>>in.log";           // stderr to file
     //snprintf(cmd, 1024, tpl, file, w, h, seek, length);
-    snprintf(cmd, 1024, tpl, rand()%2+1, w, h, seek, length);
+    snprintf(cmd, 1024, tpl, rand()%9+1, w, h, seek, length);
     FILE* fp =  popen(cmd, "r");
     if(fp == NULL) 
         fprintf(stderr, "ERR:", cmd);
