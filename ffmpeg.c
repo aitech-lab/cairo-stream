@@ -48,7 +48,7 @@ ffmpeg_out_pipe(
         " -i anullsrc"           //
 
         " -c:v libx264"          // video codec     
-        " -b:v 150k"             // bitrate
+        " -b:v 750k"             // bitrate
         " -crf 23"               // constant rate factor 0-51 
         " -preset fast"          // preset
         " -pix_fmt yuv420p"      //
