@@ -29,7 +29,7 @@ void msleep(unsigned int ms) {
 void* 
 read_thread(void* arg) {
     while (!done) {
-        FILE* in_pipe  = ffmpeg_in_pipe(w, h, rand()%100*100, 5, file); 
+        FILE* in_pipe  = ffmpeg_in_pipe(w, h, rand()%100*100, 100, file); 
         while(!done) {
             
             if (read_count - write_count >= buffer_length ) {
