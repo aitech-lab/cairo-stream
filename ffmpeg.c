@@ -23,7 +23,7 @@ ffmpeg_in_pipe(
     snprintf(cmd, 1024, tpl, rand()%9+1, w, h, seek, length);
     FILE* fp =  popen(cmd, "r");
     if(fp == NULL) 
-        fprintf(stderr, "ERR:", cmd);
+        fprintf(stderr, "ERR:");
     fprintf(stderr, "%s\n", cmd);
     return fp;
 }
@@ -63,7 +63,7 @@ ffmpeg_out_pipe(
     snprintf(cmd, 1024, tpl, w, h, key);
     FILE* fp =  popen(cmd, "w");
     if(fp == NULL) 
-        fprintf(stderr, "ERR:", cmd);
+        fprintf(stderr, "ERR:");
     fprintf(stderr, "%s\n", cmd);
     return fp;
 }
