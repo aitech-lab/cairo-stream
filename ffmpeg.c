@@ -13,14 +13,14 @@ ffmpeg_in_pipe(
         " -hide_banner"         // disable deubg
         " -ss %4$d"             // seek
         " -t %5$d"              // length
-        " -i videos/lia_0%1$d.mp4"              // input file
+        " -i %1$s"              // input file
         " -vf crop=%2$d:%3$d"   // crop filter
         " -pix_fmt rgb32"       // output format
         " -f rawvideo"          // container format
         " -"                    // pipe output
         " 2>>in.log";           // stderr to file
     //snprintf(cmd, 1024, tpl, file, w, h, seek, length);
-    snprintf(cmd, 1024, tpl, rand()%9+1, w, h, seek, length);
+    snprintf(cmd, 1024, tpl, file, w, h, seek, length);
     FILE* fp =  popen(cmd, "r");
     if(fp == NULL) 
         fprintf(stderr, "ERR:");

@@ -22,28 +22,24 @@ unsigned char* key;
 double target_fps = 30.08;
 int done = 0;
 
-int head_distance() {
-    return read_frame > write_frame ?
-           read_frame - write_frame : 
-           read_frame - write_frame + buffer_length;
+void msleep(unsigned int ms) {
+     nanosleep(&((struct timespec){ms/1000, ms%1000*1000000L}), NULL);
 }
 
 void* 
 read_thread(void* arg) {
     while (!done) {
-        FILE* in_pipe  = ffmpeg_in_pipe(w, h, rand()%10*10, 10, file); 
+        FILE* in_pipe  = ffmpeg_in_pipe(w, h, rand()%100*100, 5, file); 
         while(!done) {
-
-            if(head_distance() <= 1) {
-                struct timespec delay = { 0, 30*1000000L };
-                nanosleep(&delay, NULL);
+            
+            if (read_count - write_count >= buffer_length ) {
+                msleep(30); 
                 continue;
             }
-            
-            size_t size = fread(&buffer[write_frame*frame_size], 1, frame_size, in_pipe); 
+            size_t size = fread(&buffer[read_frame*frame_size], 1, frame_size, in_pipe); 
             if(!size) break;
-           
-            write_frame = (write_frame+1) % buffer_length;
+            read_count++; 
+            read_frame = (read_frame+1) % buffer_length;
         }
         int status = pclose(in_pipe);
         fprintf(stderr, "read end %d\n", status);
@@ -58,10 +54,17 @@ write_thread(void* arg) {
     FILE* out_pipe = ffmpeg_out_pipe(w, h, key);
 
     while(!done) {
+
+        if (read_count - write_count < buffer_length/2 ) {
+            msleep(30); 
+            continue;
+        }
+
         struct timespec start, end, delay;
         
         clock_gettime(CLOCK_MONOTONIC, &start);
-        unsigned char* frame = &buffer[read_frame*frame_size];
+        unsigned char* frame = &buffer[write_frame*frame_size];
+        draw();
         fwrite(frame, 1, frame_size, out_pipe);
         clock_gettime(CLOCK_MONOTONIC, &end);
 
@@ -80,9 +83,8 @@ write_thread(void* arg) {
         tt = ((double)end.tv_sec   + 1.0e-9*end.tv_nsec  ) - 
              ((double)start.tv_sec + 1.0e-9*start.tv_nsec);
         fps = 1.0/tt;
-        
-        read_frame = (read_frame+1) % buffer_length;
-        frame++;
+        write_count+=3;
+        write_frame = (write_frame+3) % buffer_length;
     }
     pclose(out_pipe);
 }
@@ -105,7 +107,7 @@ int main(int argc, char** argv) {
     key  = argv[4];
     
     frame_size  = w * h * 4;
-    buffer_length = 150;
+    buffer_length = 250;
     buffer_size = frame_size * buffer_length;
     buffer = calloc(buffer_size, 1);
     
