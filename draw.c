@@ -36,7 +36,7 @@ void draw() {
     cairo_rectangle(cr, 0, 0, buffer_length, 8);
     cairo_stroke(cr);
 
-   cairo_set_source_rgb(cr, 0.5, 0.0, 0.0);
+    cairo_set_source_rgb(cr, 0.5, 0.0, 0.0);
     cairo_move_to(cr, read_frame, 0);
     cairo_line_to(cr, read_frame, 8);
     cairo_stroke(cr);

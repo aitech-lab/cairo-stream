@@ -7,6 +7,7 @@ unsigned int
     write_frame,          // write head
     read_count,           // frames readed
     write_count,          // frames writed
+    write_step,           // write step
     frame_size,           // size of frame in bytes
     buffer_size,          // whole buffer size in bytes
     buffer_length,        // number of frames in buffer

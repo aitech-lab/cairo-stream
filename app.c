@@ -19,7 +19,6 @@ unsigned char* key;
 unsigned char* file;
 unsigned char* key;
 
-
 double target_fps = 30.08;
 int done = 0;
 
@@ -99,8 +98,8 @@ void sigint(int dummy) {
 void on_message(unsigned char* msg, size_t len) {
     // set speed here
     char* str = strndup(msg, len);
-    int write_step = atoi(str);
-    printf("%d\n", write_step);
+    int step = atoi(str);
+    if(step >0 && step <10) write_step = step;
     free(str);
 }
 
@@ -115,7 +114,8 @@ int main(int argc, char** argv) {
     buffer_length = 250;
     buffer_size = frame_size * buffer_length;
     buffer = calloc(buffer_size, 1);
-    
+    write_step = 1;
+
     signal(SIGINT , sigint); 
     signal(SIGTERM, sigint);
     
