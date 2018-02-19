@@ -83,8 +83,8 @@ write_thread(void* arg) {
         tt = ((double)end.tv_sec   + 1.0e-9*end.tv_nsec  ) - 
              ((double)start.tv_sec + 1.0e-9*start.tv_nsec);
         fps = 1.0/tt;
-        write_count+=1;
-        write_frame = (write_frame+1) % buffer_length;
+        write_count+=write_step;
+        write_frame = (write_frame+write_step) % buffer_length;
     }
     pclose(out_pipe);
 }
