@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include <math.h>
+#include <string.h>
 
 #include "app.h"
 #include "draw.h"
@@ -97,6 +98,10 @@ void sigint(int dummy) {
 
 void on_message(unsigned char* msg, size_t len) {
     // set speed here
+    char* str = strndup(msg, len);
+    int write_step = atoi(str);
+    printf("%d\n", write_step);
+    free(str);
 }
 
 int main(int argc, char** argv) {
