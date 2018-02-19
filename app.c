@@ -55,7 +55,7 @@ write_thread(void* arg) {
 
     while(!done) {
 
-        if (read_count - write_count < 30 ) {
+        if (read_count - write_count < 5 ) {
             msleep(30); 
             continue;
         }
