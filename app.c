@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <math.h>
 
+#include "app.h"
 #include "draw.h"
 #include "ffmpeg.h"
 #include "server.h"
@@ -17,14 +18,6 @@ unsigned char* key;
 unsigned char* file;
 unsigned char* key;
 
-unsigned char* buffer;
-unsigned int 
-    read_frame,
-    write_frame,
-    frame_size,
-    buffer_size,
-    buffer_length = 30,
-    w, h;
 
 double target_fps = 30.08;
 int done = 0;
@@ -59,8 +52,7 @@ read_thread(void* arg) {
 
 void*
 write_thread(void* arg) {
-    static double fps = 0.0;
-    static unsigned int n = 0; 
+
     static double tt, rt;
 
     FILE* out_pipe = ffmpeg_out_pipe(w, h, key);
@@ -70,7 +62,6 @@ write_thread(void* arg) {
         
         clock_gettime(CLOCK_MONOTONIC, &start);
         unsigned char* frame = &buffer[read_frame*frame_size];
-        draw(frame, w, h, n++, (float)fps);
         fwrite(frame, 1, frame_size, out_pipe);
         clock_gettime(CLOCK_MONOTONIC, &end);
 
@@ -90,7 +81,8 @@ write_thread(void* arg) {
              ((double)start.tv_sec + 1.0e-9*start.tv_nsec);
         fps = 1.0/tt;
         
-        read_frame = (read_frame+1) % buffer_length; 
+        read_frame = (read_frame+1) % buffer_length;
+        frame++;
     }
     pclose(out_pipe);
 }
@@ -112,7 +104,8 @@ int main(int argc, char** argv) {
     h    = atoi(argv[3]);
     key  = argv[4];
     
-    frame_size  = w * h * 4;  
+    frame_size  = w * h * 4;
+    buffer_length = 150;
     buffer_size = frame_size * buffer_length;
     buffer = calloc(buffer_size, 1);
     

@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <cairo/cairo.h>
 
-void draw(unsigned char* data, int w, int h, int n, double fps) {
+#include "app.h"
+
+void draw(unsigned char* data, int w, int h) {
     
     int stride = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, w);
     cairo_surface_t* surface = 
@@ -21,7 +23,7 @@ void draw(unsigned char* data, int w, int h, int n, double fps) {
 
     char text[512];
     cairo_move_to(cr, 10, 30);
-    sprintf(text, "%d %.2f", n, fps);
+    sprintf(text, "%d %.2f", frame, fps);
     cairo_show_text(cr, text);
 
     cairo_destroy(cr);
